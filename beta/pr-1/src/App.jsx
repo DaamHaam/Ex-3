@@ -107,18 +107,26 @@ function App() {
     setErrorMessage(null);
 
     const { player, delta } = pendingAction;
-    const { error } = await supabase.from('events').insert({
-      player,
-      delta,
-      comment: comment.trim() === '' ? null : comment.trim(),
-    });
+    const { data, error } = await supabase
+      .from('events')
+      .insert({
+        player,
+        delta,
+        comment: comment.trim() === '' ? null : comment.trim(),
+      })
+      .select()
+      .maybeSingle();
 
     if (error) {
       setErrorMessage("L'enregistrement du point a échoué. Essaie à nouveau.");
+    } else if (data) {
+      setEvents((current) =>
+        [...current, data].sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+      );
+      closeAction();
     }
 
     setIsSubmitting(false);
-    closeAction();
   };
 
   const handleUndo = async () => {
@@ -134,6 +142,8 @@ function App() {
 
     if (error) {
       setErrorMessage("Impossible d'annuler le dernier point. Essaie à nouveau.");
+    } else {
+      setEvents((current) => current.filter((event) => event.id !== lastEvent.id));
     }
 
     setIsSubmitting(false);
