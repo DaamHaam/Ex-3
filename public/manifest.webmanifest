@@ -1,0 +1,17 @@
+{
+  "name": "Belgique vs France",
+  "short_name": "Scoreboard",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "Scoreboard tactile synchronisé pour Eliott, Timéo et Lilouan.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
